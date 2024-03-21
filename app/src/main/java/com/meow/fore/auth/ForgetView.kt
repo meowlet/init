@@ -16,7 +16,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,20 +27,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun SignInScreen(
+fun ForgetPasswordScreen(
     viewModel: AuthViewModel? = null,
-    onNavigateToSignUp: () -> Unit = {},
-    onNavigateToForgetPassword: () -> Unit = {},
-    onNavigateToHome: () -> Unit = {}
+    onNavigateToSignIn: () -> Unit = {}
 ) {
     val authUiState = viewModel?.authUiState ?: AuthUiState()
     val context = LocalContext.current
-
-    LaunchedEffect(key1 = viewModel?.hasUser){
-        if(viewModel?.hasUser == true){
-            onNavigateToHome.invoke()
-        }
-    }
 
     Column(
         modifier = Modifier
@@ -51,21 +42,19 @@ fun SignInScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Welcome Back!",
+            text = "How ignorant!",
             style = MaterialTheme.typography.displaySmall,
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Start
         )
-        Text(
-            text = "Enter your Username & Password",
+        Text(text = "Enter your Email",
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Start
-        )
-        Spacer(modifier = Modifier.size(32.dp))
+            textAlign = TextAlign.Start)
+        Spacer(modifier = Modifier.size(24.dp))
         TextField(
-            value = authUiState.email,
-            onValueChange = { viewModel?.onEmailChange(it) },
+            value = authUiState.emailReset,
+            onValueChange = { viewModel?.onEmailResetChange(it) },
             colors = TextFieldDefaults.colors(
                 focusedContainerColor = Color.Transparent,
                 unfocusedContainerColor = Color.Transparent,
@@ -81,26 +70,11 @@ fun SignInScreen(
             singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )
-        Spacer(modifier = Modifier.size(16.dp))
-        TextField(
-            value = authUiState.password,
-            onValueChange = { viewModel?.onPasswordChange(it) },
-            colors = TextFieldDefaults.colors(
-                focusedContainerColor = Color.Transparent,
-                unfocusedContainerColor = Color.Transparent,
-                disabledContainerColor = Color.Transparent,
-            ),
-            placeholder = { Text(text = "Password", style = MaterialTheme.typography.titleMedium) },
-            textStyle = MaterialTheme.typography.titleMedium,
-            singleLine = true,
-            modifier = Modifier.fillMaxWidth(),
-            visualTransformation = PasswordVisualTransformation()
-        )
         //error field
-        if (authUiState.signInError.isNotEmpty()) {
+        if (authUiState.resetPasswordError.isNotEmpty()) {
             Spacer(modifier = Modifier.size(24.dp))
             Text(
-                text = authUiState.signInError,
+                text = authUiState.resetPasswordError,
                 style = MaterialTheme.typography.bodySmall,
                 color = Color.Red,
                 modifier = Modifier.fillMaxWidth(),
@@ -114,42 +88,25 @@ fun SignInScreen(
                 .fillMaxWidth()
                 .height(48.dp),
             onClick = {
-                viewModel?.signIn(context)
+                viewModel?.resetPassword(context){
+
+                }
             }) {
-            Text(
-                text = "Sign In",
-                style = MaterialTheme.typography.titleMedium
-            )
+            Text(text = "Sign In",
+                style = MaterialTheme.typography.titleMedium)
         }
         Spacer(modifier = Modifier.size(16.dp))
-        Text(text = "Forgot Password?",
+        Text(text = "Remember Password?",
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.secondary,
             modifier = Modifier.clickable {
-                onNavigateToForgetPassword.invoke()
+                onNavigateToSignIn.invoke()
             })
-        Spacer(modifier = Modifier.size(16.dp))
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(text = "Or")
-            Spacer(modifier = Modifier.size(4.dp))
-            Text(
-                text = "Create a New Account",
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.primary,
-                textDecoration = TextDecoration.Underline,
-                modifier = Modifier.clickable {
-                    onNavigateToSignUp.invoke()
-                })
-        }
     }
 }
 
 @Preview
 @Composable
-fun SignInPreview() {
-    SignInScreen()
+fun ForgetPassPreview() {
+    ForgetPasswordScreen()
 }

@@ -7,6 +7,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.meow.fore.auth.AuthViewModel
+import com.meow.fore.auth.ForgetPasswordScreen
+import com.meow.fore.auth.SignInScreen
+import com.meow.fore.auth.SignUpScreen
 import com.meow.fore.home.HomeScreen
 import com.meow.fore.home.HomeScreenViewModel
 
@@ -16,7 +19,7 @@ fun Navigation(
     authViewModel: AuthViewModel,
     homeScreenViewModel: HomeScreenViewModel
 ) {
-    NavHost(navController = navController, startDestination = "home") {
+    NavHost(navController = navController, startDestination = AuthRoutes.SignIn.name) {
         authGraph(authViewModel, navController)
         homeGraph(homeScreenViewModel, navController)
     }
@@ -27,13 +30,34 @@ fun NavGraphBuilder.authGraph(
     navController: NavHostController
 ) {
     composable(AuthRoutes.SignIn.name) {
-        Text(text = "Sign In")
+        SignInScreen(
+            viewModel = authViewModel,
+            onNavigateToSignUp = {
+                navController.navigate(AuthRoutes.SignUp.name)
+            },
+            onNavigateToForgetPassword = {
+                navController.navigate(AuthRoutes.ForgotPassword.name)
+            },
+            onNavigateToHome = {
+                navController.navigate(BottomNavigationItem.Home.route)
+            }
+        )
     }
     composable(AuthRoutes.SignUp.name) {
-        Text(text = "Sign Up")
+        SignUpScreen(
+            viewModel = authViewModel,
+            onNavigateToSignIn = {
+                navController.navigate(AuthRoutes.SignIn.name)
+            }
+        )
     }
     composable(AuthRoutes.ForgotPassword.name) {
-        Text(text = "Forgot Password")
+        ForgetPasswordScreen(
+            viewModel = authViewModel,
+            onNavigateToSignIn = {
+                navController.navigate(AuthRoutes.SignIn.name)
+            }
+        )
     }
 }
 

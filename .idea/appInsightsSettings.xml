@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.meow.fore" />
+                  <option name="mobileSdkAppId" value="1:136638275302:android:b58a3aebc43fc39a662527" />
+                  <option name="projectId" value="fore-e8f03" />
+                  <option name="projectNumber" value="136638275302" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
